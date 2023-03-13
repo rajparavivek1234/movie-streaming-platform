@@ -32,18 +32,11 @@ const SignupForm = ({ switchAuthState }) => {
         .min(8, "username minimum 8 characters")
         .required("username is required"),
       password: Yup.string()
-        // .matches(
-          // /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-          // "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-        // )
         .minLowercase(1, 'password must contain at least 1 lower case letter')
         .minUppercase(1, 'password must contain at least 1 upper case letter')
         .minNumbers(1, 'password must contain at least 1 number')
         .minSymbols(1, 'password must contain at least 1 special character')
         .min(8, "password requeried minimum 8 characters")
-        // .minLowercase(2, 'password requeried minimum 1 Lowwercase')
-        // .minUppercase(2, 'password requeried minimum 1 Uppercase')
-        // .minSymbols(2, 'password requeried minimum 1 Symbol')
         .required("password is required"),
       displayName: Yup.string()
         .min(8, "displayName minimum 8 characters")
