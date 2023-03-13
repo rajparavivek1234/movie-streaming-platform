@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import Container from "./Container";
 import reviewApi from "../../api/modules/review.api";
 import TextAvatar from "./TextAvatar";
+import {clean} from "profanity-cleaner";
+// let filter =new Filter();
 
 const ReviewItem = ({ review, onRemoved }) => {
   const { user } = useSelector((state) => state.user);
@@ -80,6 +82,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
   const [onRequest, setOnRequest] = useState(false);
   const [content, setContent] = useState("");
   const [reviewCount, setReviewCount] = useState(0);
+  // const [isProfanity, setIsProfanity] = useState(false);
 
   const skip = 4;
 
@@ -93,6 +96,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
     if (onRequest) return;
     setOnRequest(true);
 
+    
     const body = {
       content,
       mediaId: media.id,
@@ -161,7 +165,16 @@ const MediaReview = ({ reviews, media, mediaType }) => {
                 </Typography>
                 <TextField
                   value={content}
-                  onChange={(e) => setContent(e.target.value)}
+                  onChange={(e) =>{ 
+                    // if(!profanity.hasSwearWord(e))
+                    // {
+                      let temp = e.target.value;
+                      setContent(clean(temp, { customReplacement: (word) => "" }));
+                    // }
+                    // else{
+                      // setIsProfanity(true);
+                    // }
+                  }}
                   multiline
                   rows={4}
                   placeholder="Write your review"
@@ -174,6 +187,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
                   startIcon={<SendOutlinedIcon />}
                   loadingPosition="start"
                   loading={onRequest}
+                  // disabled = {isProfanity}
                   onClick={onAddReview}
                 >
                   post

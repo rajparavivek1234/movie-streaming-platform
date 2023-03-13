@@ -56,9 +56,10 @@ const SigninForm = ({ switchAuthState }) => {
           fullWidth
           value={signinForm.values.username}
           onChange={signinForm.handleChange}
+          onBlur = {signinForm.handleBlur}
           color="success"
-          error={signinForm.touched.username && signinForm.errors.username !== undefined}
-          helperText={signinForm.touched.username && signinForm.errors.username}
+          error={(signinForm.touched.username || signinForm.values.username) && signinForm.errors.username !== undefined}
+          helperText={(signinForm.touched.username || signinForm.values.username) && signinForm.errors.username}
         />
         <TextField
           type="password"
@@ -67,9 +68,10 @@ const SigninForm = ({ switchAuthState }) => {
           fullWidth
           value={signinForm.values.password}
           onChange={signinForm.handleChange}
+          onBlur = {signinForm.handleBlur}  
           color="success"
-          error={signinForm.touched.password && signinForm.errors.password !== undefined}
-          helperText={signinForm.touched.password && signinForm.errors.password}
+          error={(signinForm.touched.password || signinForm.values.password) && signinForm.errors.password !== undefined}
+          helperText={(signinForm.touched.password || signinForm.values.password) && signinForm.errors.password}
         />
       </Stack>
 

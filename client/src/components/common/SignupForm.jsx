@@ -9,6 +9,11 @@ import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/features/authModalSlice";
 import { setUser } from "../../redux/features/userSlice";
 
+
+import YupPassword from 'yup-password';
+YupPassword(Yup);
+
+
 const SignupForm = ({ switchAuthState }) => {
   const dispatch = useDispatch();
 
@@ -27,7 +32,18 @@ const SignupForm = ({ switchAuthState }) => {
         .min(8, "username minimum 8 characters")
         .required("username is required"),
       password: Yup.string()
-        .min(8, "password minimum 8 characters")
+        // .matches(
+          // /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+          // "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+        // )
+        .minLowercase(1, 'password must contain at least 1 lower case letter')
+        .minUppercase(1, 'password must contain at least 1 upper case letter')
+        .minNumbers(1, 'password must contain at least 1 number')
+        .minSymbols(1, 'password must contain at least 1 special character')
+        .min(8, "password requeried minimum 8 characters")
+        // .minLowercase(2, 'password requeried minimum 1 Lowwercase')
+        // .minUppercase(2, 'password requeried minimum 1 Uppercase')
+        // .minSymbols(2, 'password requeried minimum 1 Symbol')
         .required("password is required"),
       displayName: Yup.string()
         .min(8, "displayName minimum 8 characters")
@@ -66,9 +82,11 @@ const SignupForm = ({ switchAuthState }) => {
           fullWidth
           value={signinForm.values.username}
           onChange={signinForm.handleChange}
+          onBlur = {signinForm.handleBlur}
           color="success"
-          error={signinForm.touched.username && signinForm.errors.username !== undefined}
-          helperText={signinForm.touched.username && signinForm.errors.username}
+          error={(signinForm.touched.username || signinForm.values.username) && signinForm.errors.username !== undefined}
+          helperText={(signinForm.touched.username || signinForm.values.username) && signinForm.errors.username}
+          // className = {signinForm.errors.username && signinForm.touched.username ? "input-error" : ""}
         />
         <TextField
           type="text"
@@ -77,9 +95,10 @@ const SignupForm = ({ switchAuthState }) => {
           fullWidth
           value={signinForm.values.displayName}
           onChange={signinForm.handleChange}
+          onBlur = {signinForm.handleBlur}
           color="success"
-          error={signinForm.touched.displayName && signinForm.errors.displayName !== undefined}
-          helperText={signinForm.touched.displayName && signinForm.errors.displayName}
+          error={(signinForm.touched.displayName || signinForm.values.displayName) && signinForm.errors.displayName !== undefined}
+          helperText={(signinForm.touched.displayName || signinForm.values.displayName) && signinForm.errors.displayName}
         />
         <TextField
           type="password"
@@ -88,9 +107,10 @@ const SignupForm = ({ switchAuthState }) => {
           fullWidth
           value={signinForm.values.password}
           onChange={signinForm.handleChange}
+          onBlur = {signinForm.handleBlur}
           color="success"
-          error={signinForm.touched.password && signinForm.errors.password !== undefined}
-          helperText={signinForm.touched.password && signinForm.errors.password}
+          error={(signinForm.values.password || signinForm.touched.password) && signinForm.errors.password !== undefined}
+          helperText={(signinForm.values.password || signinForm.touched.password) && signinForm.errors.password}
         />
         <TextField
           type="password"
@@ -99,9 +119,10 @@ const SignupForm = ({ switchAuthState }) => {
           fullWidth
           value={signinForm.values.confirmPassword}
           onChange={signinForm.handleChange}
+          onBlur = {signinForm.handleBlur}
           color="success"
-          error={signinForm.touched.confirmPassword && signinForm.errors.confirmPassword !== undefined}
-          helperText={signinForm.touched.confirmPassword && signinForm.errors.confirmPassword}
+          error={(signinForm.values.confirmPassword || signinForm.touched.confirmPassword) && signinForm.errors.confirmPassword !== undefined}
+          helperText={(signinForm.values.confirmPassword || signinForm.touched.confirmPassword) && signinForm.errors.confirmPassword}
         />
       </Stack>
 

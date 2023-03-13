@@ -14,8 +14,12 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "axios": "^1.3.2",
+    "bad-words": "^3.0.4",
     "dayjs": "^1.11.7",
     "formik": "^2.2.9",
+    "profanity-cleaner": "^0.0.3",
+    "profanity-hindi": "^1.1.0",
+    "profanity-list": "^1.0.7",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,7 +29,8 @@
     "react-toastify": "^9.1.1",
     "swiper": "^9.0.4",
     "web-vitals": "^2.1.0",
-    "yup": "^1.0.0"
+    "yup": "^1.0.2",
+    "yup-password": "^0.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
