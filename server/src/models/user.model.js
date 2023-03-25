@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import modelOptions from "./model.options.js";
-import crypto, { generateKey } from "crypto";
+import crypto from "crypto";
 
 const userSchema = new mongoose.Schema({
   email: {
