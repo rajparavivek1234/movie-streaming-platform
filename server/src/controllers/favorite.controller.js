@@ -7,7 +7,6 @@ const addFavorite = async (req, res) => {
       user: req.user.id,
       mediaId: req.body.mediaId
     });
-
     if (isFavorite) return responseHandler.ok(res, isFavorite);
 
     const favorite = new favoriteModel({
@@ -18,7 +17,7 @@ const addFavorite = async (req, res) => {
     await favorite.save();
 
     responseHandler.created(res, favorite);
-  } catch(e) {
+  } catch (e) {
     responseHandler.error(res);
   }
 };
@@ -34,8 +33,7 @@ const removeFavorite = async (req, res) => {
 
     if (!favorite) return responseHandler.notfound(res);
 
-    await favorite.remove();
-
+    await favorite.deleteOne();
     responseHandler.ok(res);
   } catch {
     responseHandler.error(res);
