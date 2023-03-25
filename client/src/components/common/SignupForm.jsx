@@ -56,6 +56,7 @@ const SignupForm = ({ switchAuthState }) => {
         dispatch(setUser(response));
         dispatch(setAuthModalOpen({payload: true}));
         toast.success("Sign up success");
+        toast.success("mail sendes for activate your account");
       }
 
       if (err) setErrorMessage(err.message);
