@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/features/authModalSlice";
-import { setUser } from "../../redux/features/userSlice";
 
 
 import YupPassword from 'yup-password';
@@ -53,7 +52,6 @@ const SignupForm = ({ switchAuthState }) => {
       if (response) {
         signinForm.resetForm();
         // localStorage.setItem("user",response.)
-        dispatch(setUser(response));
         dispatch(setAuthModalOpen({payload: true}));
         toast.success("Sign up success");
         toast.success("mail sendes for activate your account");
