@@ -1,28 +1,32 @@
 import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
 import responseHandler from "../handlers/response.handler.js";
+import sendEmail  from "./send-mail.controller.js" ;
 
 const signup = async (req, res) => {
   try {
-    const { username, password, displayName } = req.body;
+    const { email, password, displayName } = req.body;
+    const checkUser = await userModel.findOne({ email });
 
-    const checkUser = await userModel.findOne({ username });
-
-    if (checkUser) return responseHandler.badrequest(res, "username already used");
+    if (checkUser) return responseHandler.badrequest(res, "email already used");
 
     const user = new userModel();
 
     user.displayName = displayName;
-    user.username = username;
+    user.email = email;
     user.setPassword(password);
 
     await user.save();
+
 
     const token = jsonwebtoken.sign(
       { data: user.id },
       process.env.TOKEN_SECRET_KEY,
       { expiresIn: "24h" }
     );
+
+    const url = `${process.env.BASE_URL}/user/verify/${user.id}`;
+		await sendEmail(email, "Verify Email", url);
 
     responseHandler.created(res, {
       token,
@@ -36,12 +40,12 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await userModel.findOne({ username }).select("username password salt id displayName");
+    const user = await userModel.findOne({ email }).select("email password salt id displayName verified");
 
     if (!user) return responseHandler.badrequest(res, "User not exist");
-
+    if (!user.verified) return responseHandler.badrequest(res, "user is not verified");
     if (!user.validPassword(password)) return responseHandler.badrequest(res, "Wrong password");
 
     const token = jsonwebtoken.sign(
@@ -59,10 +63,7 @@ const signin = async (req, res) => {
       id: user.id
     });
   } catch(e) {
-    // responseHandler.error(res);
-    console.log('====================================');
-    console.log(e);
-    console.log('====================================');
+    responseHandler.error(res);
   }
 };
 
@@ -98,9 +99,41 @@ const getInfo = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    await userModel.find({},function(err, users) {
+      var userMap = {};
+  
+      users.forEach(function(user) {
+        userMap[user._id] = user;
+      });
+  
+      responseHandler.ok(res, userMap);
+    });
+
+  } catch {
+    responseHandler.error(res);
+  }
+};
+
+
+const verifyUser = async (req, res) => {
+  try {
+    const user = await userModel.findOne({ _id: req.params.id });
+    user.verified=true;
+    await user.save();
+    // res.send();
+    responseHandler.ok(res,"Your Account is Verified");
+  } catch(err) {
+    responseHandler.error(res);
+  }
+};
+
 export default {
   signup,
   signin,
   getInfo,
-  updatePassword
+  getAllUsers,
+  updatePassword,
+  verifyUser
 };

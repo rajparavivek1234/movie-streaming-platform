@@ -19,11 +19,7 @@ const addFavorite = async (req, res) => {
 
     responseHandler.created(res, favorite);
   } catch(e) {
-    // responseHandler.error(res);
-    console.log('====================================');
-    console.log(e);
-    console.log('====================================');
-
+    responseHandler.error(res);
   }
 };
 

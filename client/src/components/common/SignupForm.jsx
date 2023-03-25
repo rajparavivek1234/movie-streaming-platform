@@ -23,14 +23,12 @@ const SignupForm = ({ switchAuthState }) => {
   const signinForm = useFormik({
     initialValues: {
       password: "",
-      username: "",
+      email: "",
       displayName: "",
       confirmPassword: ""
     },
     validationSchema: Yup.object({
-      username: Yup.string()
-        .min(8, "username minimum 8 characters")
-        .required("username is required"),
+      email: Yup.string().email("Invalid email address.").matches(/[a-zA-Z0-9]{3,}[@]{1}[a-zA-Z]{3,}[.]{1}[.a-zA-Z]{3,}$/,"Invalid email address."),
       password: Yup.string()
         .minLowercase(1, 'password must contain at least 1 lower case letter')
         .minUppercase(1, 'password must contain at least 1 upper case letter')
@@ -49,7 +47,6 @@ const SignupForm = ({ switchAuthState }) => {
     onSubmit: async values => {
       setErrorMessage(undefined);
       setIsLoginRequest(true);
-      console.log("asdasdasdasd");
       const { response, err } = await userApi.signup(values);
       setIsLoginRequest(false);
 
@@ -57,8 +54,8 @@ const SignupForm = ({ switchAuthState }) => {
         signinForm.resetForm();
         // localStorage.setItem("user",response.)
         dispatch(setUser(response));
-        dispatch(setAuthModalOpen(false));
-        toast.success("Sign in success");
+        dispatch(setAuthModalOpen({payload: true}));
+        toast.success("Sign up success");
       }
 
       if (err) setErrorMessage(err.message);
@@ -70,15 +67,15 @@ const SignupForm = ({ switchAuthState }) => {
       <Stack spacing={3}>
         <TextField
           type="text"
-          placeholder="username"
-          name="username"
+          placeholder="email"
+          name="email"
           fullWidth
-          value={signinForm.values.username}
+          value={signinForm.values.email}
           onChange={signinForm.handleChange}
           onBlur = {signinForm.handleBlur}
           color="success"
-          error={(signinForm.touched.username || signinForm.values.username) && signinForm.errors.username !== undefined}
-          helperText={(signinForm.touched.username || signinForm.values.username) && signinForm.errors.username}
+          error={(signinForm.touched.email || signinForm.values.email) && signinForm.errors.email !== undefined}
+          helperText={(signinForm.touched.email || signinForm.values.email) && signinForm.errors.email}
           // className = {signinForm.errors.username && signinForm.touched.username ? "input-error" : ""}
         />
         <TextField

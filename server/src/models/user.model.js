@@ -3,10 +3,11 @@ import modelOptions from "./model.options.js";
 import crypto, { generateKey } from "crypto";
 
 const userSchema = new mongoose.Schema({
-  username: {
+  email: {
     type: String,
-    required: true,
-    unique: true
+    trim: true,
+    lowercase: true,
+    unique: true,
   },
   displayName: {
     type: String,
@@ -16,6 +17,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     select: false
+  },
+  verified :{
+    type : Boolean,
+    default: false
   },
   salt: {
     type: String,
