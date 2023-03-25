@@ -1,7 +1,7 @@
 import axios from "axios";
 import queryString from "query-string";
 
-const baseURL = "https://easywatch-back-end.onrender.com";
+const baseURL = "https://easywatchbackendservice.onrender.com";
 // const baseURL ="http://127.0.0.1:5000/api/v1";
 
 
